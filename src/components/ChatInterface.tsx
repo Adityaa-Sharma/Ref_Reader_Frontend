@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { API_ENDPOINTS } from '../constants/api';
-import styles from '../styles/ChatInterface.module.css';
+import { API_ENDPOINTS } from '@/constants/api';
+import styles from '@/styles/ChatInterface.module.css';
 
 interface Message {
   type: 'user' | 'bot';
@@ -13,6 +13,43 @@ interface ChatInterfaceProps {
     arxiv_id: string;
   };
 }
+
+const formatMessage = (content: string) => {
+  // Split into paragraphs
+  const paragraphs = content.split('\n\n');
+  
+  return paragraphs.map((paragraph, idx) => {
+    // Check if it's a bullet point list
+    if (paragraph.includes('- **')) {
+      const items = paragraph.split('- ');
+      return (
+        <ul key={idx} className={styles.bulletList}>
+          {items.filter(item => item.trim()).map((item, itemIdx) => {
+            // Process bold text within bullet points
+            const processedItem = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            return (
+              <li 
+                key={itemIdx} 
+                dangerouslySetInnerHTML={{ __html: processedItem }}
+                className={styles.bulletItem}
+              />
+            );
+          })}
+        </ul>
+      );
+    }
+    
+    // Process regular paragraphs with bold text
+    const processedParagraph = paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    return (
+      <p 
+        key={idx}
+        dangerouslySetInnerHTML={{ __html: processedParagraph }}
+        className={styles.paragraph}
+      />
+    );
+  });
+};
 
 export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -31,17 +68,32 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
 
     try {
       const response = await fetch(
-        `${API_ENDPOINTS.CHAT}?response=${encodeURIComponent(JSON.stringify(sessionData))}&query=${encodeURIComponent(question)}`
+        `${API_ENDPOINTS.CHAT}/?response=${encodeURIComponent(JSON.stringify(sessionData))}&query=${encodeURIComponent(question)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        }
       );
-      
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to get response');
+      }
+
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to get response');
       
-      setMessages(prev => [...prev, { type: 'bot', content: data.response }]);
+      if (typeof data.response === 'string') {
+        setMessages(prev => [...prev, { type: 'bot', content: data.response }]);
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (err: any) {
+      console.error('Chat Error:', err);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: `Error: ${err.message}`
+        content: `Error: ${err.message || 'Failed to get response'}` 
       }]);
     } finally {
       setLoading(false);
@@ -53,7 +105,10 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
       <div className={styles.messages}>
         {messages.map((msg, idx) => (
           <div key={idx} className={`${styles.message} ${styles[msg.type]}`}>
-            {msg.content}
+            {msg.type === 'bot' 
+              ? formatMessage(msg.content)
+              : msg.content
+            }
           </div>
         ))}
         {loading && <div className={styles.loading}>Loading...</div>}

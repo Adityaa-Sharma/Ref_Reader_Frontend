@@ -15,10 +15,10 @@ export default function PaperInput({ onSubmit, loading, error }: PaperInputProps
     if (!id.trim()) {
       return 'ArXiv ID is required';
     }
-    // Basic ArXiv ID format validation
-    const arxivPattern = /^\d{4}\.\d{4,5}(v\d+)?$/;
+    // Updated ArXiv ID format validation to be more lenient
+    const arxivPattern = /^\d{4}\.\d{4,5}(?:v\d+)?$/;
     if (!arxivPattern.test(id)) {
-      return 'Invalid ArXiv ID format (e.g., 2101.12345)';
+      return 'Invalid ArXiv ID format (e.g., 2002.06595)';
     }
     return null;
   };
@@ -33,6 +33,7 @@ export default function PaperInput({ onSubmit, loading, error }: PaperInputProps
       return;
     }
 
+    console.log('Submitting ArXiv ID:', arxivId.trim()); // For debugging
     onSubmit(arxivId.trim());
   };
 
