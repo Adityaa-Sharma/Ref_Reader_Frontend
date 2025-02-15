@@ -19,24 +19,26 @@ const Home: NextPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({ arxiv_id: arxivId })
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to process paper: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to process paper');
       }
 
       const data = await response.json();
-      console.log('Response:', data); // For debugging
+      console.log('Extract response:', data); // For debugging
 
       setSessionData({
-        session_id: `session-${Date.now()}`,
+        session_id: data.session_id || `session-${Date.now()}`,
         arxiv_id: arxivId
       });
     } catch (err: any) {
-      console.error('Error details:', err);
-      setError(err.message || 'Failed to connect to the server. Please try again.');
+      console.error('Error:', err);
+      setError(err.message || 'Failed to process paper');
       setSessionData(null);
     } finally {
       setLoading(false);

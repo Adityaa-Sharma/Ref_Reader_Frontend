@@ -75,17 +75,20 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
     setMessages(prev => [...prev, { type: 'user', content: question }]);
 
     try {
-      // Correctly format the URL parameters
-      const response = await fetch(
-        `${API_ENDPOINTS.CHAT}/?response=${encodeURIComponent(JSON.stringify(sessionData))}&query=${encodeURIComponent(question)}`,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Origin': window.location.origin,
-          }
-        }
-      );
+      const queryParams = new URLSearchParams({
+        response: JSON.stringify(sessionData),
+        query: question
+      });
+
+      const response = await fetch(`${API_ENDPOINTS.CHAT}/?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        mode: 'cors'
+      });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
