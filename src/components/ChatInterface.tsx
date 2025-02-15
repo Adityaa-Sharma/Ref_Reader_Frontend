@@ -83,7 +83,8 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
       const response = await fetch(`${API_ENDPOINTS.CHAT}/?${queryParams}`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         }
       });
 
