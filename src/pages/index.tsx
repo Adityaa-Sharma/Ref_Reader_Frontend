@@ -19,24 +19,24 @@ const Home: NextPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
         },
         body: JSON.stringify({ arxiv_id: arxivId })
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to process paper');
+        throw new Error(`Failed to process paper: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Response:', data); // For debugging
+
       setSessionData({
-        session_id: `session-${Date.now()}`, // You might want to get this from the backend
+        session_id: `session-${Date.now()}`,
         arxiv_id: arxivId
       });
     } catch (err: any) {
-      console.error('Error:', err);
-      setError(err.message || 'Failed to process paper');
+      console.error('Error details:', err);
+      setError(err.message || 'Failed to connect to the server. Please try again.');
       setSessionData(null);
     } finally {
       setLoading(false);
