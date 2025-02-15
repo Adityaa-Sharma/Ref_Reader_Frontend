@@ -75,25 +75,25 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
     setMessages(prev => [...prev, { type: 'user', content: question }]);
 
     try {
-      const queryParams = new URLSearchParams({
-        response: JSON.stringify(sessionData),
-        query: question
-      });
-
-      const response = await fetch(`${API_ENDPOINTS.CHAT}/?${queryParams}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+      // Correctly format the URL parameters
+      const response = await fetch(
+        `${API_ENDPOINTS.CHAT}/?response=${encodeURIComponent(JSON.stringify(sessionData))}&query=${encodeURIComponent(question)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Origin': window.location.origin,
+          }
         }
-      });
+      );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to get response');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `Failed to get response: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Chat response:', data); // For debugging
       
       if (typeof data.response === 'string') {
         setMessages(prev => [...prev, { type: 'bot', content: data.response }]);

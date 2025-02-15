@@ -6,9 +6,9 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'http://13.203.97.104:8000' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,POST,OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Accept' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Accept, Origin' },
         ],
       },
     ];
