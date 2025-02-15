@@ -1,11 +1,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 70vh;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  height: 75vh;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+  overflow: hidden;
 }
 
 .messages {
@@ -15,103 +16,116 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
 }
 
 .message {
   padding: 1rem 1.5rem;
-  border-radius: 12px;
+  border-radius: 16px;
   max-width: 80%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   font-size: 1rem;
   line-height: 1.6;
-  animation: fadeIn 0.3s ease-out;
+  animation: slideIn 0.3s ease-out;
+  transition: transform 0.2s ease;
+}
+
+.message:hover {
+  transform: translateY(-2px);
 }
 
 .user {
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #1a73e8, #1557b0);
   color: #ffffff;
   align-self: flex-end;
   margin-left: auto;
+  box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2);
 }
 
 .bot {
-  background-color: #ffffff;
+  background: white;
   color: #333333;
   align-self: flex-start;
   margin-right: auto;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .inputForm {
   display: flex;
   gap: 1rem;
   padding: 1.5rem;
-  background: #ffffff;
-  border-top: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .input {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  border: 2px solid transparent;
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
 }
 
 .input:focus {
   outline: none;
   border-color: #1a73e8;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
 }
 
 .button {
-  padding: 0.75rem 1.5rem;
-  background-color: #1a73e8;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #1a73e8, #1557b0);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2);
 }
 
 .button:hover {
-  background-color: #1557b0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 115, 232, 0.3);
 }
 
 .button:disabled {
-  background-color: #9aa0a6;
-  cursor: not-allowed;
+  background: linear-gradient(135deg, #9aa0a6, #80868b);
+  transform: none;
+  box-shadow: none;
 }
 
+/* Update animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add pulse animation for loading */
 .loading {
   align-self: center;
   color: #5f6368;
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 1rem 0;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-.bulletList {
-  margin: 0.75rem 0;
-  padding-left: 1.5rem;
-  list-style-type: disc;
-}
-
-.bulletItem {
-  margin-bottom: 0.75rem;
-  line-height: 1.6;
-}
-
-.paragraph {
-  margin: 0.75rem 0;
-  line-height: 1.6;
-}
-
-.message strong {
-  font-weight: 600;
-  color: inherit;
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
 }
 
 /* Custom scrollbar */
@@ -133,14 +147,23 @@
   background: #bdc1c6;
 }
 
-/* Animation for new messages */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.bulletList {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.bulletItem {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.paragraph {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+}
+
+.message strong {
+  font-weight: 600;
+  color: inherit;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { API_ENDPOINTS } from '@/constants/api';
 import styles from '@/styles/ChatInterface.module.css';
 
@@ -55,6 +55,14 @@ export default function ChatInterface({ sessionData }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Fix: Use useEffect instead of useState for welcome message
+  useEffect(() => {
+    setMessages([{
+      type: 'bot',
+      content: `Welcome! I'm your research paper assistant. I've analyzed the paper with ArXiv ID: ${sessionData.arxiv_id}. Feel free to ask me any questions about its contents and references.`
+    }]);
+  }, [sessionData.arxiv_id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

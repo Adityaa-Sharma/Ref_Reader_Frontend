@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import styles from '../styles/PaperInput.module.css';
+// Import the image
+import logoImage from '../media/gpt_and_jaemark_1.jpg';
 
 interface PaperInputProps {
   onSubmit: (arxivId: string) => void;
@@ -39,6 +41,15 @@ export default function PaperInput({ onSubmit, loading, error }: PaperInputProps
 
   return (
     <div className={styles.container}>
+      <div className={styles.logoContainer}>
+        <div className={styles.imageWrapper}>
+          <img
+            src="/media/gpt_and_jaemark_1.jpg"
+            alt="GPT and Jaemark"
+            className={styles.logo}
+          />
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"

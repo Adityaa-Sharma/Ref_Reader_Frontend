@@ -4,7 +4,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
   color: #333333;
 }
 
@@ -15,4 +16,9 @@ body {
 ::selection {
   background-color: #1a73e8;
   color: white;
+}
+
+/* Add smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }

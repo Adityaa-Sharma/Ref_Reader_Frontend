@@ -42,9 +42,23 @@ const Home: NextPage = () => {
     }
   };
 
+  const handleSwitchPaper = () => {
+    setSessionData(null);
+    setError(null);
+  };
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Reference Reader Chat</h1>
+      <h1 className={styles.title}>Reference Reader</h1>
+      
+      {sessionData && (
+        <button 
+          onClick={handleSwitchPaper} 
+          className={styles.switchPaperButton}
+        >
+          Switch Paper
+        </button>
+      )}
       
       {!sessionData && (
         <PaperInput 
