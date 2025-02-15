@@ -19,6 +19,7 @@ const Home: NextPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ arxiv_id: arxivId })
       });
