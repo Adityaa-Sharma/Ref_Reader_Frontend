@@ -32,7 +32,7 @@ Check out RefReader in action:
 
 ## 🏗️ Architecture
 
-<img src="Architecture/Ref-Reader-Architecture.png" alt="RefReader Architecture" width="600"/>
+<img src="Public/images/Ref-Reader-Architecture.png" alt="RefReader Architecture" width="600"/>
 
 The system follows a multi-path architecture for processing queries. Here's an interactive version of the architecture:
 
