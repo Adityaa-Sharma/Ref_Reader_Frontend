@@ -28,3 +28,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# adding the demo-video to the gitignore
+
+# demo-video
+/demo-video
